@@ -31,7 +31,7 @@
     }
     
     .blah {
-        background-color: gray;
+        background-color: slategray;
     }
     
     .wrapper {
@@ -41,6 +41,17 @@
     .notes {
         font-size: 12px;
         color: gray;
+    }
+
+    #yearChooser {
+      width: 550px;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-size: 21px;
+      font-weight: bold;
+      color: dimgray;
     }
     </style>
 </head>
@@ -56,16 +67,17 @@
 <script id='template' type="text/ractve">
     <div class="container-fluid">
         <div class="row">
-            <div class="wrapper col-sm-6">
-                <label for=yearChooser>Year</label>
-                <input type=range id=yearChooser min=1995 value={{yearChooser}} max=2015 step=1>
-                <h2>{{yearChooser}}</h2>
+            <div class="wrapper col-sm-12">
+            <h1>Same-Sex Marriage in State Law</h1>
+            <p>After Utah enacted the first ban on same-sex marriage in 1995, similar bans spread across the states. Yet the US seemed to change its mind just as quickly. The Massachusetts Supreme Judicial Court ruled in favor of same-sex marriage in 2003, but it wasn't until 2008 that statewide reversals picked up steam.</p>
+                <label for=yearChooser>Year: {{yearChooser}}</label>
+                <input type=range id='yearChooser' min=1995 value={{yearChooser}} max=2015 step=1>
                 <span class="legend banned"></span><span> = Banned</span>
                 <span class="legend legal"></span> <span> = Legal</span>
                 <span class="legend blah"></span><span> = Neither here nor there</span>
                 <div id="map-{{yearChooser}}" class="map" decorator='squares:{{yearChooser}}' style="width: {{width}}px; height: {{height}}px"></div>
             <div class="notes">
-                <p>Data: Pew Research Center, Map By: Scott Pham</p>
+                <p>Data: Pew Research Center<br/> Map By: Scott Pham</p>
             </div>
             </div>
             
@@ -87,7 +99,7 @@ function squaresDecorator(node, content) {
 
     function makeMap(content) {
         map.make(data.states[content], {
-            "background-color": "lightgray",
+            "background-color": "slategray",
             color: "white",
             "font-size": "10pt",
             padding: .1
