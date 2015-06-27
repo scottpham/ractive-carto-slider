@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- squared -->
+    <script src="squared.js"></script>
+    <!-- ractive -->
+    <script src='//cdn.ractivejs.org/latest/ractive.min.js'></script>
+    <!-- BS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <style type="text/css">
+    .legal {
+        background-color: steelblue;
+    }
+    
+    .legend {
+        width: 20px;
+        height: 20px;
+        float: left;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    
+    .legend + span {
+        float: left;
+    }
+    
+    .banned {
+        background-color: #fec44f;
+    }
+    
+    .blah {
+        background-color: gray;
+    }
+    
+    .wrapper {
+        position: relative;
+    }
+    
+    .notes {
+        font-size: 12px;
+        color: gray;
+    }
+    </style>
+</head>
+<!-- HTML -->
+
+<body>
+    <div id='container'></div>
+</body>
+<!-- HTML OVER -->
+<!-- GET THA DATA -->
+<script src="data.js"></script>
+<!-- RACTIVE TEMPLATE -->
+<script id='template' type="text/ractve">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="wrapper col-sm-6">
+                <label for=yearChooser>Year</label>
+                <input type=range id=yearChooser min=1995 value={{yearChooser}} max=2015 step=1>
+                <h2>{{yearChooser}}</h2>
+                <span class="legend banned"></span><span> = Banned</span>
+                <span class="legend legal"></span> <span> = Legal</span>
+                <span class="legend blah"></span><span> = Neither here nor there</span>
+                <div id="map-{{yearChooser}}" class="map" decorator='squares:{{yearChooser}}' style="width: {{width}}px; height: {{height}}px"></div>
+            <div class="notes">
+                <p>Data: Pew Research Center, Map By: Scott Pham</p>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+</script>
+<!-- RACTIVE CODE -->
+<script>
+// squares
+function squaresDecorator(node, content) {
+
+    //setup work
+    console.log("year = " + content);
+
+    var data = this.get();
+
+    var string = "map-" + content;
+    var map = new Squared(string);
+
+    function makeMap(content) {
+        map.make(data.states[content], {
+            "background-color": "lightgray",
+            color: "white",
+            "font-size": "10pt",
+            padding: .1
+        });
+    }
+
+    makeMap(content);
+
+    return {
+        update: function(newValue, oldValue) {
+            console.log("year = " + newValue);
+            makeMap(newValue);
+        },
+        teardown: function() {
+            // cleanup work
+        }
+    };
+
+}; //end of squares
+
+// // add to ractive
+// Ractive.decorators.squaresDecorator = squaresDecorator;
+
+var ractive = new Ractive({
+    el: 'container',
+    template: '#template',
+    data: {
+        states: data,
+        greeting: 'Hello',
+        recipient: 'world',
+        width: '100%',
+        height: 350,
+        years: Object.keys(data),
+        yearChooser: 1995
+    },
+    decorators: {
+        squares: squaresDecorator
+    }
+});
+</script>
+<script>
+</script>
+
+</html>
