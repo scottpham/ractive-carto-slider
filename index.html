@@ -12,6 +12,7 @@
     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <!-- buttons.css -->
     <link rel="stylesheet" href="buttons.css">
+
     <style type="text/css">
     .legal {
         background-color: steelblue;
@@ -47,6 +48,10 @@
         margin-bottom: 10px;
         display: inline;
     }
+
+    .rangeslider__fill {
+      background-color: slategray;
+    }
     
     label {
         font-size: 24px;
@@ -61,6 +66,15 @@
     @media(max-width:450px) {
         .map {
             margin-top: 40px;
+        }
+
+        .legend + span{
+          font-size: 12px;
+        }
+
+        .legend {
+          width: 15px;
+          height: 15px;
         }
     }
     </style>
