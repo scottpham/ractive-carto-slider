@@ -50,12 +50,12 @@
         font-weight: bold;
         color: dimgray;
     }
-
-  @media(max-width:450px){
-    .map {
-      margin-top: 40px;
+    
+    @media(max-width:450px) {
+        .map {
+            margin-top: 40px;
+        }
     }
-  }
     </style>
 </head>
 <!-- HTML -->
@@ -98,12 +98,12 @@ function squaresDecorator(node, content) {
     var map = new Squared(string);
 
     function makeMap(content) {
-      map.make(states[content], {
-          "background-color": "slategray",
-          color: "white",
-          "font-size": "10pt",
-          padding: .1
-      });
+        map.make(states[content], {
+            "background-color": "slategray",
+            color: "white",
+            "font-size": "10pt",
+            padding: .1
+        });
     }
 
     // calculate height
@@ -111,15 +111,18 @@ function squaresDecorator(node, content) {
     // set height in ractive instance
     this.set('height', height);
 
+    this.observe('yearChooser', function(year) {
+        console.log(year);
+        $(node).html('');
+        makeMap(year);
+    });
+
     makeMap(content);
 
     return {
         update: function(newValue, oldValue) {
-            console.log("year = " + newValue);
-            makeMap(newValue);
         },
         teardown: function() {
-          map.destroy();
             // cleanup work
         }
     };
@@ -131,10 +134,10 @@ var ractive = new Ractive({
     el: 'container',
     template: '#template',
     data: {
-      states: data,
-      width: '100%',
-      height: '', //decorator sets this
-      yearChooser: 1995 //initializes
+        states: data,
+        width: '100%',
+        height: '', //decorator sets this
+        yearChooser: 1995 //initializes
     },
     decorators: {
         squares: squaresDecorator
