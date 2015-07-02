@@ -124,6 +124,7 @@
 function squaresDecorator(node, content) {
 
     var states = this.get('states');
+    console.log(this);
 
     var string = "map-" + content;
     var map = new Squared(string);
@@ -132,7 +133,7 @@ function squaresDecorator(node, content) {
         map.make(states[content], {
             "background-color": "slategray",
             color: "white",
-            "font-size": "10pt",
+            "font-size": "9pt",
             padding: .1
         });
     }
@@ -166,40 +167,40 @@ var ractive = new Ractive({
     data: {
         states: data,
         width: '100%',
+        animateVar: '',
         height: '', //decorator sets this
         yearChooser: 1995 //initializes
     },
     decorators: {
         squares: squaresDecorator
-    }
-});
-
-// set global
-
-function animate() {
+    },
+    animate: function () {
     // clear out any old intervals
-    var temp = ractive.get('animateVar');
-    ractive.set('animateVar', clearInterval(temp));
+    var temp = this.get('animateVar');
+    this.set('animateVar', clearInterval(temp));
 
     // increment once immediately
     currentYear = ractive.get('yearChooser');
     ractive.set('yearChooser', currentYear + 1);
 
     // set the interval on the empty var
-    ractive.set('animateVar', setInterval(function() {
+    this.set('animateVar', setInterval(function() {
         currentYear = ractive.get('yearChooser');
         if (currentYear < 2015) {
             ractive.set('yearChooser', currentYear + 1);
         } else {
             ractive.set('yearChooser', 1995);
         }
-    }, 900));
+    }, 500));
 }
 
+});
+
+
 ractive.on({
-    play: animate,
+    play: ractive.animate,
     pause: function() {
-        var temp = ractive.get('animateVar');
+        var temp = this.get('animateVar');
         ractive.set('animateVar', clearInterval(temp));
     }
 });
